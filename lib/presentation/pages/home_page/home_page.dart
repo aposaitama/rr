@@ -15,22 +15,33 @@ class HomePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Welcome, ${context.read<AuthBloc>().state.user?.userName ?? 'User'}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25.0,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'You are now logged in',
-                style: TextStyle(
-                  color: Colors.blueGrey,
-                  fontSize: 15.0,
-                ),
-                textAlign: TextAlign.center,
+              BlocSelector<AuthBloc, AuthBlocState, String?>(
+                selector: (state) => state.user?.userName,
+                builder: (context, userName) {
+                  return Column(
+                    children: [
+                      Text(
+                        'Welcome, ${userName ?? 'User'}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      const Text(
+                        'You are now logged in',
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 15.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  );
+                },
               ),
               const SizedBox(height: 32),
               BlocBuilder<AuthBloc, AuthBlocState>(
