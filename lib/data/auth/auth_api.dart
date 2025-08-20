@@ -1,6 +1,8 @@
 import 'package:rr/data/auth/i_auth_api.dart';
-import 'package:rr/data/models/auth_response.dart';
 import 'package:rr/data/models/base_response.dart';
+import 'package:rr/data/models/responses/auth_response.dart';
+import 'package:rr/data/models/responses/user_info_response.dart';
+import 'package:rr/data/models/user/user.dart';
 
 class MockAuthApiService implements AuthApi {
   @override
@@ -13,14 +15,19 @@ class MockAuthApiService implements AuthApi {
         seconds: 1,
       ),
     );
-    if (email == 'test@example.com' && password == '123456') {
-      return BaseResponse(
+    if (email == '1@test.com' && password == '111111') {
+      final responseExmpl = BaseResponse(
         data: AuthResponse(
-          accessToken: 'mock_token_abc123',
-          userName: 'RRTest',
+          accessToken: 'accessToken121212121',
+          user: User(
+            userName: 'qqq',
+            id: 1,
+          ),
         ),
         success: true,
       );
+
+      return responseExmpl;
     } else {
       throw Exception(
         'Invalid credentials',
@@ -34,6 +41,26 @@ class MockAuthApiService implements AuthApi {
       const Duration(
         milliseconds: 500,
       ),
+    );
+  }
+
+  @override
+  Future<BaseResponse<UserInfoResponse>> getUserInfo(
+    String accessToken,
+  ) async {
+    await Future.delayed(
+      const Duration(
+        milliseconds: 500,
+      ),
+    );
+    return BaseResponse(
+      data: UserInfoResponse(
+        user: User(
+          id: 1,
+          userName: 'qqq',
+        ),
+      ),
+      success: true,
     );
   }
 }

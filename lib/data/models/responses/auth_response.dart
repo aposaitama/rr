@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rr/data/models/user/user.dart';
 
 part 'auth_response.freezed.dart';
 part 'auth_response.g.dart';
@@ -6,7 +7,7 @@ part 'auth_response.g.dart';
 @freezed
 sealed class AuthResponse with _$AuthResponse {
   const factory AuthResponse({
-    String? userName,
+    User? user,
     String? accessToken,
   }) = _AuthResponse;
 

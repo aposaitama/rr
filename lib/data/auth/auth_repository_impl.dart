@@ -1,5 +1,8 @@
 import 'package:rr/data/auth/i_auth_api.dart';
 import 'package:rr/data/core/secure_storage/i_secure_storage_service.dart';
+import 'package:rr/data/models/base_response.dart';
+import 'package:rr/data/models/responses/auth_response.dart';
+import 'package:rr/data/models/responses/user_info_response.dart';
 
 import '../../../domain/auth/repositories/auth_repository.dart';
 
@@ -10,7 +13,8 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.api, this.storage);
 
   @override
-  Future<void> login(String email, String password) async {
+  Future<BaseResponse<AuthResponse>> login(
+      String email, String password) async {
     final res = await api.login(
       email,
       password,
@@ -22,11 +26,21 @@ class AuthRepositoryImpl implements AuthRepository {
         );
       }
     }
+    return res;
   }
 
   @override
   Future<void> logout() async {
     await api.logout();
     await storage.deleteToken();
+  }
+
+  @override
+  Future<BaseResponse<UserInfoResponse>> getUserInfo(
+    String accessToken,
+  ) async {
+    return await api.getUserInfo(
+      accessToken,
+    );
   }
 }

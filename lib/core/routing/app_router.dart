@@ -1,27 +1,36 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rr/core/routing/app_routes.dart';
+import 'package:rr/core/routing/go_router_refresh_stream.dart';
+import 'package:rr/presentation/pages/auth/auth_bloc/auth_bloc.dart';
 
 class AppRouter {
   const AppRouter._();
 
-  static final GoRouter routerConfig = GoRouter(
-    debugLogDiagnostics: true,
-    initialLocation: LoginRoute().location,
-    routes: $appRoutes,
-    redirect: (BuildContext context, GoRouterState state) {
-      // final bool hasToken = GetIt.I<StorageService>().accessToken != null;
-      final bool hasToken = false;
+  static GoRouter createRouter(AuthBloc authBloc) {
+    return GoRouter(
+      initialLocation: '/login',
+      routes: $appRoutes,
+      redirect: (
+        BuildContext context,
+        GoRouterState state,
+      ) {
+        final authStatus = authBloc.state.status;
+        final isLogin = state.matchedLocation.contains(LoginRoute().location);
 
-      final isLogin = state.matchedLocation.contains(
-        LoginRoute().location,
-      );
+        if (authStatus == AuthenticationStatus.notAuthenticated && !isLogin) {
+          return LoginRoute().location;
+        }
 
-      if (!hasToken && !isLogin) {
-        return LoginRoute().location;
-      }
+        if (authStatus == AuthenticationStatus.authenticated && isLogin) {
+          return HomeRoute().location;
+        }
 
-      return null;
-    },
-  );
+        return null;
+      },
+      refreshListenable: GoRouterRefreshStream(
+        authBloc.stream,
+      ),
+    );
+  }
 }
