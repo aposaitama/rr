@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "rr",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/presentation/main.dart"
+        },
+        {
+            "name": "rr (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/presentation/main.dart"
+        },
+        {
+            "name": "rr (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "lib/presentation/main.dart"
+        }
+    ]
+}
